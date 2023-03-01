@@ -1,24 +1,13 @@
-#container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-#wheel {
-  position: relative;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-}
-#pointer {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  transform: translate(-50%, -50%);
+header {
+    height: 400px;
+    width: 100%;
+    text-align: center;
+    padding-top: 100px;
+    color: white;
+    overflow: hidden;
+    background: #C04848;  /* fallback for old browsers */
+    background: linear-gradient(rgb(72,0,72,0.8), rgb(192,72,72,0.8)), url("wheel.jpg");  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(rgb(72,0,72,0.8), rgb(192,72,72,0.8)), url("pointer.png"); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-size: cover;
+    background-repeat: no-repeat;
 }
