@@ -1,7 +1,88 @@
-<header>
-    <section class='hero-header'>
-        <h1>Hero title</h1>
-        <h2>Another landing page</h2>
-        <button>Sign-up</button>
-    </section>
-</header>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Wheel Slider</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .slider {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 75%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        background: #F44336;
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 30px;
+        height: 30px;
+        background: #F44336;
+        cursor: pointer;
+      }
+
+      .slider::-ms-thumb {
+        width: 30px;
+        height: 30px;
+        background: #F44336;
+        cursor: pointer;
+      }
+
+      .wheel {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+		height: 600px;
+        background-image: url('wheel.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: transform 0s ease-in-out;
+      }
+      
+      .pointer {
+        position: absolute;
+        top: 17.5%;
+        left: 50%;
+		transform: rotate(270deg) translate(100%, -100%);
+        width: 10%;
+        height: 10%;
+        background-image: url('pointer.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="range" min="0" max="360" value="0" class="slider" oninput="rotateWheel(this.value)">
+    <div class="wheel"></div>
+    <div class="pointer"></div>
+    <script>
+      const wheel = document.querySelector('.wheel');
+
+      function rotateWheel(deg) {
+        wheel.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+      }
+    </script>
+  </body>
+</html>
