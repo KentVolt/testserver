@@ -48,6 +48,7 @@
         position: absolute;
         top: 35%;
         left: 50%;
+		border-radius: 100%;
         transform: translate(-50%, -50%);
         width: 600px;
 		height: 600px;
@@ -61,11 +62,24 @@
       .pointer {
         position: absolute;
         top: 17.5%;
-        left: 50%;
+        left: 47.75%;
 		transform: rotate(270deg) translate(100%, -100%);
         width: 10%;
-        height: 10%;
+        height: 5%;
         background-image: url('pointer.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 1;
+      }
+	  
+      .paypal {
+        position: absolute;
+        top: 80%;
+        left: 45.5%;
+		width: 200px;
+        height: 200px;
+        background-image: url('qrcode.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -84,5 +98,6 @@
         wheel.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
       }
     </script>
+    <div class="paypal"></div>
   </body>
 </html>
