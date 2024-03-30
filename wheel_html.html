@@ -46,12 +46,12 @@
 
       .wheel {
         position: absolute;
-        top: 35%;
+        top: 50%;
         left: 50%;
-		border-radius: 100%;
+        border-radius: 100%;
         transform: translate(-50%, -50%);
         width: 600px;
-		height: 600px;
+        height: 600px;
         background-image: url('wheel.jpg');
         background-size: cover;
         background-position: center;
@@ -63,7 +63,7 @@
         position: absolute;
         top: 17.5%;
         left: 47.75%;
-		transform: rotate(270deg) translate(100%, -100%);
+        transform: rotate(270deg) translate(100%, -100%);
         width: 10%;
         height: 5%;
         background-image: url('pointer.png');
@@ -72,46 +72,51 @@
         background-repeat: no-repeat;
         z-index: 1;
       }
-	  
-      .paypal {
-        position: absolute;
-        top: 80%;
-        left: 45.5%;
-		width: 200px;
-        height: 200px;
-        background-image: url('qrcode.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        z-index: 1;
-      }
-	  
-	  .donate {
-        position: absolute;
-        top: 75%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 20px;
-        font-family: Arial, sans-serif;
-        z-index: 1;
-      }
     </style>
   </head>
   <body>
-    <input type="range" min="0" max="360" value="0" class="slider" oninput="rotateWheel(this.value)">
-    <div class="wheel"></div>
+    <input type="range" min="0" max="360" value="180" class="slider" oninput="rotateWheel(this.value)">
+    <div class="wheel" id="wheel"></div>
     <div class="pointer"></div>
-    <div class="donate">
-      <a href="https://www.buymeacoffee.com/kylev">Feel Free to Donate!</a>
-    </div>
-    <div class="paypal"></div>
     <script>
-      const wheel = document.querySelector('.wheel');
+      const wheel = document.getElementById('wheel');
+      let isDragging = false;
+      let previousAngle = 0;
 
       function rotateWheel(deg) {
         wheel.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
       }
+
+      function getAngle(event) {
+        const centerX = wheel.offsetLeft + wheel.offsetWidth / 2;
+        const centerY = wheel.offsetTop + wheel.offsetHeight / 2;
+        const deltaX = event.clientX - centerX;
+        const deltaY = event.clientY - centerY;
+        return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+      }
+
+      function startDrag(event) {
+        isDragging = true;
+        previousAngle = getAngle(event);
+      }
+
+      function drag(event) {
+        if (!isDragging) return;
+        const currentAngle = getAngle(event);
+        const deltaAngle = currentAngle - previousAngle;
+        const currentRotation = parseInt(wheel.style.transform.replace('rotate(', '').replace('deg)', ''));
+        const newRotation = (currentRotation + deltaAngle) % 360;
+        wheel.style.transform = `translate(-50%, -50%) rotate(${newRotation}deg)`;
+        previousAngle = currentAngle;
+      }
+
+      function endDrag() {
+        isDragging = false;
+      }
+
+      wheel.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', drag);
+      window.addEventListener('mouseup', endDrag);
     </script>
   </body>
 </html>
