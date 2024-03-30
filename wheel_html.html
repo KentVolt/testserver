@@ -44,30 +44,37 @@
         cursor: pointer;
       }
 
-      .wheel {
+      .wheel-container {
         position: absolute;
         top: 50%;
         left: 50%;
-        border-radius: 100%;
         transform: translate(-50%, -50%);
         width: 600px;
         height: 600px;
+        overflow: hidden; /* Ensure pointer overlaps */
+      }
+
+      .wheel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
         background-image: url('wheel.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        transition: transform 0s ease-in-out;
+        cursor: grab;
       }
       
       .pointer {
         position: absolute;
-        top: 17.5%;
-        left: 47.75%;
-        transform: rotate(270deg) translate(100%, -100%);
+        top: -5%; /* Overlap a bit over the top */
+        left: 50%;
+        transform: translateX(-50%);
         width: 10%;
-        height: 5%;
+        padding-top: 10%;
         background-image: url('pointer.png');
-        background-size: cover;
+        background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
         z-index: 1;
@@ -76,20 +83,25 @@
   </head>
   <body>
     <input type="range" min="0" max="360" value="180" class="slider" oninput="rotateWheel(this.value)">
-    <div class="wheel" id="wheel"></div>
-    <div class="pointer"></div>
+    <div class="wheel-container" id="wheelContainer">
+      <div class="wheel" id="wheel"></div>
+      <div class="pointer" id="pointer"></div>
+    </div>
+    
     <script>
       const wheel = document.getElementById('wheel');
+      const wheelContainer = document.getElementById('wheelContainer');
+      const pointer = document.getElementById('pointer');
       let isDragging = false;
       let previousAngle = 0;
 
       function rotateWheel(deg) {
-        wheel.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+        wheel.style.transform = `rotate(${deg}deg)`;
       }
 
       function getAngle(event) {
-        const centerX = wheel.offsetLeft + wheel.offsetWidth / 2;
-        const centerY = wheel.offsetTop + wheel.offsetHeight / 2;
+        const centerX = wheelContainer.offsetLeft + wheelContainer.offsetWidth / 2;
+        const centerY = wheelContainer.offsetTop + wheelContainer.offsetHeight / 2;
         const deltaX = event.clientX - centerX;
         const deltaY = event.clientY - centerY;
         return Math.atan2(deltaY, deltaX) * (180 / Math.PI);
@@ -98,6 +110,8 @@
       function startDrag(event) {
         isDragging = true;
         previousAngle = getAngle(event);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', endDrag);
       }
 
       function drag(event) {
@@ -106,17 +120,17 @@
         const deltaAngle = currentAngle - previousAngle;
         const currentRotation = parseInt(wheel.style.transform.replace('rotate(', '').replace('deg)', ''));
         const newRotation = (currentRotation + deltaAngle) % 360;
-        wheel.style.transform = `translate(-50%, -50%) rotate(${newRotation}deg)`;
+        wheel.style.transform = `rotate(${newRotation}deg)`;
         previousAngle = currentAngle;
       }
 
       function endDrag() {
         isDragging = false;
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', endDrag);
       }
 
       wheel.addEventListener('mousedown', startDrag);
-      window.addEventListener('mousemove', drag);
-      window.addEventListener('mouseup', endDrag);
     </script>
   </body>
 </html>
